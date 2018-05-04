@@ -1,0 +1,78 @@
+extends layout
+
+block content
+  div(class="row")
+    div(class="page-header")
+      h2 Cursos
+      button(type="button" class="btn btn-success" data-toggle="modal" data-target="#modalAgregarCurso") Añadir
+  
+  <!-- Tabla -->
+  div(class="row")
+    table(class="table table-striped")
+      thead
+        tr
+          th Nombre
+          th Opciones
+      tbody(data-bind="foreach: cursos")
+        tr
+          td(data-bind="text: nombreCurso")
+          td
+            div(class="btn-group")
+              button(class="btn btn-info" data-bind="click: $root.cargar" data-toggle="modal" data-target="#modalAgregarGrupo") Agregar Grupos
+              button(class="btn btn-warning" data-bind="click: $root.getGrupos" data-toggle="modal" data-target="#modalGrupos") Grupos
+  
+  <!-- Modal Agregar -->          
+  div(class="modal fade" id="modalAgregarCurso" role="dialog")
+    div(class="modal-dialog")
+      div(class="modal-content")
+        form(class="form-horizontal" data-bind="submit: agregar")
+          div(class="modal-header")
+            button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+            h4(class="modal-title") Agregar
+          div(class="modal-body")
+            div(class="form-group" align="center")
+              strong(class="col-lg-3 control-label") Nombre:
+              div(class="col-lg-8")
+                input(name="nombreCurso" id="nombreCurso" type="text" class="form-control" data-bind="value: cursoNuevo.nombreCurso" required)
+          div(class="modal-footer")
+            button(type="submit" class="btn btn-primary") Agregar
+            button(type="button" class="btn btn-default" data-dismiss="modal") Cancelar  
+  
+  <!-- Modal Agregar Grupos --> 
+  div(data-bind="if: cursoCargado")        
+    div(class="modal fade" id="modalAgregarGrupo" role="dialog")
+      div(class="modal-dialog")
+        div(class="modal-content")
+          form(class="form-horizontal" data-bind="submit: agregarCursoG")
+            div(class="modal-header")
+              button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+              h4(class="modal-title") Agregar Grupo
+            div(class="modal-body")
+              div(class="form-group" align="center")
+                strong(class="col-lg-3 control-label") Grupo:                
+                div(class="col-lg-8")
+                    select(class="form-control" name="idGrupo" id="idGrupo" 
+                    data-bind="options: grupos, optionsText: 'nombreGrupo', optionValue: 'idGrupo', value: cursoGrupoNuevo.Grupo")
+            div(class="modal-footer")
+              button(type="submit" class="btn btn-primary") Agregar
+              button(type="button" class="btn btn-default" data-dismiss="modal") Cancelar 
+  
+  <!-- Modal Grupos --> 
+  div(data-bind="if: cursoGrupoCargado")        
+    div(class="modal fade" id="modalGrupos" role="dialog")
+      div(class="modal-dialog")
+        div(class="modal-content")
+          div(class="modal-header")
+            button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+            h4(class="modal-title") Grupos
+          div(class="modal-body")
+            table(class="table table-striped")
+              thead
+                tr
+                  th Nombre
+              tbody(data-bind="foreach: cursoGrupos")
+                tr
+                  td(data-bind="text: nombreGrupo")
+  
+  include footer
+  script(src="/javascripts/curso.js")
